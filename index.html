@@ -281,7 +281,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            let history = [];
+            let history = JSON.parse(localStorage.getItem('history')) || [];
 
             function showResults(input, addResult, subtractResult) {
                 $('#addResult').text(addResult.toFixed(1));
@@ -302,6 +302,10 @@
                 });
 
                 if (history.length > 5) history.pop();
+                
+                // Save to local storage
+                localStorage.setItem('history', JSON.stringify(history));
+                
                 updateHistory();
             }
 
@@ -345,6 +349,9 @@
                 const value = $(this).val();
                 $('#addButton').prop('disabled', !value || isNaN(value));
             });
+
+            // Load history on page load
+            updateHistory();
         });
     </script>
 </body>
