@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Operations Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            padding: 0;
+            margin: 0;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        #numberInput {
+            border-radius: 8px 0 0 8px;
+            border: 1px solid #dee2e6;
+            padding: 0.625rem 1rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        #numberInput:focus {
+            border-color: #0dcaf0;
+            box-shadow: none;
+        }
+
+        #addButton {
+            border-radius: 0 8px 8px 0;
+            padding: 0.625rem 1.25rem;
+            font-weight: 500;
+            background: #0dcaf0;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        #addButton:hover {
+            background: #0baccd;
+        }
+
+        .title {
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .result-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .result-card.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .result-card.add {
+            background: #28a745;
+            color: white;
+        }
+
+        .result-card.subtract {
+            background: #dc3545;
+            color: white;
+        }
+
+        .result-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .result-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-container {
+            margin-top: 1.5rem;
+            border-top: 1px solid #dee2e6;
+            padding-top: 1rem;
+        }
+
+        .history-item {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            background: #f8f9fa;
+            font-size: 0.875rem;
+        }
+
+        .history-value {
+            text-align: center;
+            padding: 0.25rem;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .history-value.input {
+            background: #6c757d;
+        }
+
+        .history-value.add {
+            background: #28a745;
+        }
+
+        .history-value.subtract {
+            background: #dc3545;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 576px) {
+            body {
+                padding: 0;
+                background: white;
+            }
+
+            .container {
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+            }
+
+            .calculator-card {
+                padding: 1rem;
+                border-radius: 0;
+                box-shadow: none;
+                min-height: 100vh;
+            }
+
+            .title {
+                font-size: 1.25rem;
+                margin: 0.5rem 0 1rem 0;
+            }
+
+            .input-group {
+                margin-bottom: 1rem;
+            }
+
+            #numberInput {
+                font-size: 1rem;
+                padding: 0.75rem;
+            }
+
+            #addButton {
+                padding: 0.75rem 1rem;
+            }
+
+            .result-cards {
+                gap: 0.75rem;
+                margin: 0.75rem -0.5rem;
+                padding: 0 0.5rem;
+            }
+
+            .result-card {
+                padding: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .result-value {
+                font-size: 1.5rem;
+            }
+
+            .history-container {
+                margin-top: 1rem;
+                padding: 1rem 0;
+            }
+
+            .history-item {
+                padding: 0.5rem;
+                gap: 0.5rem;
+                margin-bottom: 0.75rem;
+                background: #f0f2f5;
+            }
+
+            .history-value {
+                font-size: 0.9rem;
+                padding: 0.5rem;
+            }
+
+            h6 {
+                font-size: 1rem;
+                margin-bottom: 0.75rem;
+                font-weight: 600;
+            }
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.3s ease forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="calculator-card animate__animated animate__fadeIn">
+            <h2 class="title">
+                <i class="bi bi-calculator"></i> Calculator
+            </h2>
+            
+            <form id="numberForm">
+                <div class="input-group">
+                    <input type="number" 
+                           id="numberInput" 
+                           class="form-control" 
+                           required 
+                           placeholder="Enter a number..."
+                           step="any"
+                           inputmode="decimal">
+                    <button class="btn btn-info text-white" type="submit" id="addButton">
+                        <i class="bi bi-plus-circle me-1"></i>Calculate
+                    </button>
+                </div>
+            </form>
+
+            <div class="result-cards">
+                <div class="result-card add">
+                    <div class="result-value" id="addResult">-</div>
+                </div>
+                <div class="result-card subtract">
+                    <div class="result-value" id="subtractResult">-</div>
+                </div>
+            </div>
+
+            <div class="history-container d-none" id="historyContainer">
+                <h6 class="mb-2">Recent Results</h6>
+                <div id="historyList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let history = [];
+
+            function showResults(input, addResult, subtractResult) {
+                $('#addResult').text(addResult.toFixed(1));
+                $('#subtractResult').text(subtractResult.toFixed(1));
+                
+                $('.result-card').addClass('animate-fadeInUp');
+                setTimeout(() => {
+                    $('.result-card').removeClass('animate-fadeInUp');
+                }, 300);
+            }
+
+            function addToHistory(input, addResult, subtractResult) {
+                history.unshift({
+                    input,
+                    addResult,
+                    subtractResult,
+                    timestamp: new Date().toLocaleTimeString()
+                });
+
+                if (history.length > 5) history.pop();
+                updateHistory();
+            }
+
+            function updateHistory() {
+                const container = $('#historyContainer');
+                const list = $('#historyList');
+                
+                if (history.length > 0) {
+                    container.removeClass('d-none');
+                    list.empty();
+                    
+                    history.forEach(item => {
+                        list.append(`
+                            <div class="history-item animate-fadeInUp">
+                                <div class="history-value input">${item.input.toFixed(1)}</div>
+                                <div class="history-value add">${item.addResult.toFixed(1)}</div>
+                                <div class="history-value subtract">${item.subtractResult.toFixed(1)}</div>
+                            </div>
+                        `);
+                    });
+                }
+            }
+
+            $('#numberForm').on('submit', function (event) {
+                event.preventDefault();
+
+                const input = $('#numberInput');
+                const number = parseFloat(input.val());
+
+                if (!isNaN(number)) {
+                    const resultAdd = number + 12;
+                    const resultSubtract = number - 4;
+
+                    showResults(number, resultAdd, resultSubtract);
+                    addToHistory(number, resultAdd, resultSubtract);
+                    input.val('').focus();
+                }
+            });
+
+            $('#numberInput').on('input', function() {
+                const value = $(this).val();
+                $('#addButton').prop('disabled', !value || isNaN(value));
+            });
+        });
+    </script>
+</body>
+</html>
