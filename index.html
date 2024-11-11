@@ -281,7 +281,10 @@
             </div>
 
             <div class="history-container d-none" id="historyContainer">
-                <h6 class="mb-2">Recent Results</h6>
+                <h6 class="mb-2 d-flex justify-content-between">
+                    <span>Recent Results</span>
+                    <button class="btn btn-sm btn-danger" id="resetButton">Reset</button>
+                </h6>
                 <div id="historyList"></div>
             </div>
         </div>
@@ -359,6 +362,13 @@
             $('#numberInput').on('input', function() {
                 const value = $(this).val();
                 $('#addButton').prop('disabled', !value || isNaN(value));
+            });
+
+            // Clear history from both the page and local storage
+            $('#resetButton').on('click', function() {
+                history = [];
+                localStorage.removeItem('history');
+                updateHistory();
             });
 
             // Load history on page load
